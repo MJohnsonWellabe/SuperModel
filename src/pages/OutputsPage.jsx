@@ -51,7 +51,9 @@ export default function OutputsPage() {
       const results = await runFullModel(
         policies,
         assumptions,
-        meta.proj_months || 24,
+        meta.proj_months || 360,
+        meta.valuation_date,
+        meta.time_step || 'monthly',
         (pct) => setRunStatus('running', pct)
       )
       setOutputs(results)

@@ -1,19 +1,30 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
-import { fileURLToPath } from 'url'
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
-  base: '/SuperModel/',
-  root: __dirname,
+  base: './',
   build: {
-    outDir: resolve(__dirname, 'docs'),
-    emptyOutDir: true,
+    outDir: 'docs',
+    assetsDir: 'assets',
     rollupOptions: {
-      input: resolve(__dirname, 'index.html')
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          charts: ['recharts'],
+          xlsx: ['xlsx'],
+          zip: ['jszip']
+        }
+      }
+    }
+  },
+  optimizeDeps: {
+    exclude: ['pyodide']
+  },
+  server: {
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin'
     }
   }
 })
